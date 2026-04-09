@@ -1,6 +1,8 @@
-# Lesson Authoring Guide
+# AlgoViz — Lesson Authoring Guide
 
-This guide explains how to add a new lesson to the Algorithm Visualizer without changing the whole application.
+This guide explains how to add a new lesson to AlgoViz without changing the whole application.
+
+---
 
 ## 1. Create a Lesson Module
 
@@ -10,9 +12,7 @@ Add a new file under `src/lessons/`, for example:
 src/lessons/array-sum.ts
 ```
 
-Export a `LessonDefinition` object.
-
-Example:
+Export a `LessonDefinition` object:
 
 ```ts
 import type { LessonDefinition } from './lesson-types';
@@ -41,29 +41,35 @@ while (i < arr.length) {
 };
 ```
 
+---
+
 ## 2. Choose Lesson Metadata Carefully
 
 Key fields:
 
-- `id`: unique stable identifier used by the registry and UI
-- `title`: short label shown in the lesson selector
-- `description`: initial explanation shown before stepping
-- `starterCode`: Java-like source shown in the editor
-- `initialBindings`: initial runtime values used by the reducer before execution starts
+| Field | Description |
+|-------|-------------|
+| `id` | Unique stable identifier used by the registry and UI |
+| `title` | Short label shown in the lesson selector |
+| `description` | Initial explanation shown before stepping |
+| `starterCode` | Java-like source shown in the editor |
+| `initialBindings` | Initial runtime values used by the reducer before execution starts |
 
 Keep `starterCode` and `initialBindings` consistent. If the code starts with `target = 2;`, the initial bindings should reflect that same value.
+
+---
 
 ## 3. Mark Pointer Variables
 
 Use `pointerVariables` for loop indices or cursor-like variables such as:
 
-- `i`
-- `j`
-- `left`
-- `right`
+- `i`, `j`
+- `left`, `right`
 - `maxIndex`
 
 Pointer variables emit `MOVE_POINTER` events and are rendered above the array. Do not include ordinary accumulators like `sum`, `count`, or `answer` unless they really represent an index.
+
+---
 
 ## 4. Choose Watched Variables
 
@@ -71,16 +77,16 @@ Use `watchedVariables` for variables you want visible in the compact variable ro
 
 Current UI behavior:
 
-- pointer variables are shown by pointer markers above the array
-- non-pointer watched variables are shown in the variable row inside the array panel
+- pointer variables → shown by pointer markers above the array
+- non-pointer watched variables → shown in the variable row inside the array panel
 
-Because of that, avoid duplicating pointer variables unless you intentionally want them tracked for reducer state only.
+Avoid duplicating pointer variables unless you intentionally want them tracked for reducer state only.
+
+---
 
 ## 5. Add Explanation Text
 
-Use `explanationMap` to provide lesson-specific teaching copy for important runtime events.
-
-Example:
+Use `explanationMap` to provide lesson-specific teaching copy for important runtime events:
 
 ```ts
 explanationMap: {
@@ -95,25 +101,30 @@ You can map either:
 - a static string
 - a function `(event) => string` when the explanation depends on the event payload
 
+---
+
 ## 6. Prefer Supported Syntax Only
 
 Current supported subset is intentionally narrow.
 
-Supported safely:
+**Supported:**
 
 - assignments
 - `if`, `while`, `for`, `break`, `continue`
-- one-dimensional arrays
-- `.length`
-- primitive declarations such as `int i = 0;`
+- one-dimensional arrays and `.length`
+- primitive declarations: `int i = 0;`
 - `System.out.println(...)`
 - `swap(arr, i, j)` helper for array swaps
 
-Avoid unsupported constructs such as classes, imports, user-defined methods, and multi-dimensional arrays.
+**Avoid:** classes, imports, user-defined methods, multi-dimensional arrays.
+
+---
 
 ## 7. Register the Lesson
 
 Import the new lesson into `src/lessons/registry.ts` and add it to the `lessons` array.
+
+---
 
 ## 8. Test the Lesson
 
@@ -130,9 +141,11 @@ If the lesson introduces a new supported pattern for the language subset, also a
 - normalizer behavior
 - instrumenter behavior
 
+---
+
 ## 9. Practical Tips
 
-- keep lesson code small enough for students to read in one glance
-- prefer one main idea per lesson
-- use clear variable names that match the explanation text
-- if a swap is needed, prefer `swap(arr, i, j)` instead of manual temp-variable swaps in new lessons
+- Keep lesson code small enough for students to read in one glance
+- Prefer one main idea per lesson
+- Use clear variable names that match the explanation text
+- If a swap is needed, prefer `swap(arr, i, j)` instead of manual temp-variable swaps
