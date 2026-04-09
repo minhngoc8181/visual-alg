@@ -14,7 +14,7 @@ export function createLookupLessonConfigs(): LessonConfig[] {
       description: 'Return the first index where target appears, or -1 if it does not exist.',
       starterCode: [
         'indexOfValue(numbers, target) {',
-        '  for (let i = 0; i < numbers.size(); i += 1) {',
+        '  for (var i = 0; i < numbers.size(); i += 1) {',
         '    if (numbers.get(i) === target) {',
         '      return i;',
         '    }',
@@ -40,7 +40,7 @@ export function createLookupLessonConfigs(): LessonConfig[] {
       description: 'Return the last index where target appears, or -1 if it does not exist.',
       starterCode: [
         'lastIndexOfValue(numbers, target) {',
-        '  for (let i = numbers.size() - 1; i >= 0; i -= 1) {',
+        '  for (var i = numbers.size() - 1; i >= 0; i -= 1) {',
         '    if (numbers.get(i) === target) {',
         '      return i;',
         '    }',
@@ -55,7 +55,7 @@ export function createLookupLessonConfigs(): LessonConfig[] {
       },
       hints: [
         'Dùng vòng lặp for chạy ngược từ cuối mảng:',
-        'for (let i = numbers.size() - 1; i >= 0; i -= 1) { ... }'
+        'for (var i = numbers.size() - 1; i >= 0; i -= 1) { ... }'
       ],
       solution: (numbers, target) => (numbers as number[]).lastIndexOf(target as number),
     },
@@ -66,7 +66,7 @@ export function createLookupLessonConfigs(): LessonConfig[] {
       description: 'Return true when target exists in the array, otherwise false.',
       starterCode: [
         'containsValue(numbers, target) {',
-        '  for (let i = 0; i < numbers.size(); i += 1) {',
+        '  for (var i = 0; i < numbers.size(); i += 1) {',
         '    if (numbers.get(i) === target) {',
         '      return true;',
         '    }',
@@ -90,8 +90,8 @@ export function createLookupLessonConfigs(): LessonConfig[] {
       description: 'Count how many times target appears.',
       starterCode: [
         'countOccurrences(numbers, target) {',
-        '  let count = 0;',
-        '  for (let i = 0; i < numbers.size(); i += 1) {',
+        '  var count = 0;',
+        '  for (var i = 0; i < numbers.size(); i += 1) {',
         '    if (numbers.get(i) === target) {',
         '      count += 1;',
         '    }',
@@ -103,7 +103,7 @@ export function createLookupLessonConfigs(): LessonConfig[] {
         args: [createNumberArray(rng, { lengthMin: 5, lengthMax: 10, valueMin: -2, valueMax: 6 }), randomInt(rng, -2, 6)],
       }),
       hints: [
-        'Khởi tạo biến đếm: let count = 0;',
+        'Khởi tạo biến đếm: var count = 0;',
         'Mỗi khi tìm thấy target thì: count += 1;'
       ],
       solution: (numbers, target) => (numbers as number[]).filter((value: number) => value === (target as number)).length,
@@ -115,8 +115,8 @@ export function createLookupLessonConfigs(): LessonConfig[] {
       description: 'Return an array containing every index where target appears.',
       starterCode: [
         'allIndicesOfValue(numbers, target) {',
-        '  const indices = [];',
-        '  for (let i = 0; i < numbers.size(); i += 1) {',
+        '  var indices = [];',
+        '  for (var i = 0; i < numbers.size(); i += 1) {',
         '    if (numbers.get(i) === target) {',
         '      indices.add(i);',
         '    }',
@@ -126,7 +126,7 @@ export function createLookupLessonConfigs(): LessonConfig[] {
       ].join('\n'),
       genTest: (rng) => ({ args: [createNumberArray(rng, { lengthMin: 5, lengthMax: 10, valueMin: -2, valueMax: 5 }), randomInt(rng, -2, 5)] }),
       hints: [
-        'Khởi tạo mảng rỗng: const indices = [];',
+        'Khởi tạo mảng rỗng: var indices = [];',
         'Thêm index vào kết quả: indices.add(i);'
       ],
       solution: (numbers, target) => {
@@ -146,7 +146,7 @@ export function createLookupLessonConfigs(): LessonConfig[] {
       description: 'Return true when the array is already sorted in non-decreasing order.',
       starterCode: [
         'isSortedAscending(numbers) {',
-        '  for (let i = 1; i < numbers.size(); i += 1) {',
+        '  for (var i = 1; i < numbers.size(); i += 1) {',
         '    if (numbers.get(i) < numbers.get(i - 1)) {',
         '      return false;',
         '    }',

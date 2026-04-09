@@ -44,15 +44,15 @@ export function executeStudentCode({
     const workerSource = `
 Object.defineProperty(Array.prototype, 'size', { value: function() { return this.length; }, enumerable: false, writable: true });
 Object.defineProperty(Array.prototype, 'add', { value: function(e) { this.push(e); return true; }, enumerable: false, writable: true });
-Object.defineProperty(Array.prototype, 'get', { value: function(i) { return this[i]; }, enumerable: false, writable: true });
 Object.defineProperty(Array.prototype, 'set', { value: function(i, e) { const o = this[i]; this[i] = e; return o; }, enumerable: false, writable: true });
 Object.defineProperty(Array.prototype, 'remove', { value: function(i) { return this.splice(i, 1)[0]; }, enumerable: false, writable: true });
 Object.defineProperty(Array.prototype, 'isEmpty', { value: function() { return this.length === 0; }, enumerable: false, writable: true });
 Object.defineProperty(Object.prototype, 'put', { value: function(k, v) { this[k] = v; return null; }, enumerable: false, writable: true });
-Object.defineProperty(Object.prototype, 'get', { value: function(k) { return this[k] === undefined ? null : this[k]; }, enumerable: false, writable: true });
 Object.defineProperty(Object.prototype, 'getOrDefault', { value: function(k, d) { return Object.prototype.hasOwnProperty.call(this, k) ? this[k] : d; }, enumerable: false, writable: true });
 Object.defineProperty(Object.prototype, 'containsKey', { value: function(k) { return Object.prototype.hasOwnProperty.call(this, k); }, enumerable: false, writable: true });
 Object.defineProperty(Object.prototype, 'keySet', { value: function() { return Object.keys(this); }, enumerable: false, writable: true });
+Object.defineProperty(Array.prototype, 'get', { value: function(i) { return this[i]; }, enumerable: false, writable: true });
+Object.defineProperty(Object.prototype, 'get', { value: function(k) { return this[k] === undefined ? null : this[k]; }, enumerable: false, writable: true });
 
 self.onmessage = async (event) => {
   const { source, methodName, args } = event.data;

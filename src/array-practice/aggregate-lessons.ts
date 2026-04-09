@@ -10,8 +10,8 @@ export function createAggregateLessonConfigs(): LessonConfig[] {
       description: 'Return the sum of all array elements.',
       starterCode: [
         'sumAllElements(numbers) {',
-        '  let sum = 0;',
-        '  for (let i = 0; i < numbers.size(); i += 1) {',
+        '  var sum = 0;',
+        '  for (var i = 0; i < numbers.size(); i += 1) {',
         '    sum += numbers.get(i);',
         '  }',
         '  return sum;',
@@ -19,7 +19,7 @@ export function createAggregateLessonConfigs(): LessonConfig[] {
       ].join('\n'),
       genTest: (rng) => ({ args: [createNumberArray(rng, { lengthMin: 4, lengthMax: 9, valueMin: -8, valueMax: 12 })] }),
       hints: [
-        'Khởi tạo biến tổng: let sum = 0;',
+        'Khởi tạo biến tổng: var sum = 0;',
         'Cộng dồn trong vòng lặp: sum += numbers.get(i);'
       ],
       solution: (numbers) => (numbers as number[]).reduce((sum: number, value: number) => sum + value, 0),
@@ -31,8 +31,8 @@ export function createAggregateLessonConfigs(): LessonConfig[] {
       description: 'Return the arithmetic mean of a non-empty array.',
       starterCode: [
         'averageOfElements(numbers) {',
-        '  let sum = 0;',
-        '  for (let i = 0; i < numbers.size(); i += 1) {',
+        '  var sum = 0;',
+        '  for (var i = 0; i < numbers.size(); i += 1) {',
         '    sum += numbers.get(i);',
         '  }',
         '  return sum / numbers.size();',
@@ -56,8 +56,8 @@ export function createAggregateLessonConfigs(): LessonConfig[] {
       description: 'Return how many distinct values appear in the array.',
       starterCode: [
         'countUniqueValues(numbers) {',
-        '  const seen = [];',
-        '  for (let i = 0; i < numbers.size(); i += 1) {',
+        '  var seen = [];',
+        '  for (var i = 0; i < numbers.size(); i += 1) {',
         '    if (!seen.includes(numbers.get(i))) {',
         '      seen.add(numbers.get(i));',
         '    }',
@@ -67,7 +67,7 @@ export function createAggregateLessonConfigs(): LessonConfig[] {
       ].join('\n'),
       genTest: (rng) => ({ args: [createNumberArray(rng, { lengthMin: 5, lengthMax: 10, valueMin: -3, valueMax: 5 })] }),
       hints: [
-        'Khởi tạo mảng lưu các giá trị đã thấy: const seen = [];',
+        'Khởi tạo mảng lưu các giá trị đã thấy: var seen = [];',
         'Nếu chưa thấy thì thêm vào: if (!seen.includes(numbers.get(i))) { seen.add(numbers.get(i)); }',
         'Trả về seen.size();'
       ],
