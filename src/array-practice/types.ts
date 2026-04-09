@@ -3,7 +3,7 @@ export interface DomRefs {
   lessonDescription: HTMLParagraphElement;
   methodName: HTMLElement;
   testCount: HTMLElement;
-  editor: HTMLTextAreaElement;
+  editorHost: HTMLDivElement;
   runButton: HTMLButtonElement;
   solutionButton: HTMLButtonElement;
   resetButton: HTMLButtonElement;
@@ -15,6 +15,8 @@ export interface DomRefs {
   summarySeed: HTMLElement;
   resultsBody: HTMLTableSectionElement;
   sampleCase: HTMLDivElement;
+  hintPanel: HTMLElement;
+  hintBody: HTMLElement;
 }
 
 export interface PersistedState {
@@ -55,6 +57,7 @@ export interface Lesson {
   checker?: (input: { actual: unknown; expected: unknown; test: DecoratedTestCase }) => { pass: boolean; message: string };
   visibleCases?: Array<RawTestCase | PlannedTestCaseFactory>;
   hiddenCases?: Array<RawTestCase | PlannedTestCaseFactory>;
+  hints?: string[];
 }
 
 export type LessonConfig = Omit<Lesson, 'solutionCode' | 'testCount' | 'visibleTestCount' | 'visibleCases' | 'hiddenCases'> & {

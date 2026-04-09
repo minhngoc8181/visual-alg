@@ -10,16 +10,20 @@ export function createExtremaLessonConfigs(): LessonConfig[] {
       description: 'Return the maximum number in a non-empty array.',
       starterCode: [
         'findMaxValue(numbers) {',
-        '  let max = numbers[0];',
-        '  for (let i = 1; i < numbers.length; i += 1) {',
-        '    if (numbers[i] > max) {',
-        '      max = numbers[i];',
+        '  let max = numbers.get(0);',
+        '  for (let i = 1; i < numbers.size(); i += 1) {',
+        '    if (numbers.get(i) > max) {',
+        '      max = numbers.get(i);',
         '    }',
         '  }',
         '  return max;',
         '}',
       ].join('\n'),
       genTest: (rng) => ({ args: [createNumberArray(rng, { lengthMin: 3, lengthMax: 8, valueMin: -12, valueMax: 18 })] }),
+      hints: [
+        'Giả sử phần tử đầu tiên là lớn nhất: let max = numbers.get(0);',
+        'So sánh với các phần tử khác: if (numbers.get(i) > max) { max = numbers.get(i); }'
+      ],
       solution: (numbers) => Math.max(...(numbers as number[])),
     },
     {
@@ -29,16 +33,20 @@ export function createExtremaLessonConfigs(): LessonConfig[] {
       description: 'Return the minimum number in a non-empty array.',
       starterCode: [
         'findMinValue(numbers) {',
-        '  let min = numbers[0];',
-        '  for (let i = 1; i < numbers.length; i += 1) {',
-        '    if (numbers[i] < min) {',
-        '      min = numbers[i];',
+        '  let min = numbers.get(0);',
+        '  for (let i = 1; i < numbers.size(); i += 1) {',
+        '    if (numbers.get(i) < min) {',
+        '      min = numbers.get(i);',
         '    }',
         '  }',
         '  return min;',
         '}',
       ].join('\n'),
       genTest: (rng) => ({ args: [createNumberArray(rng, { lengthMin: 3, lengthMax: 8, valueMin: -12, valueMax: 18 })] }),
+      hints: [
+        'Giả sử phần tử đầu tiên là nhỏ nhất: let min = numbers.get(0);',
+        'So sánh: if (numbers.get(i) < min) { min = numbers.get(i); }'
+      ],
       solution: (numbers) => Math.min(...(numbers as number[])),
     },
     {
@@ -49,8 +57,8 @@ export function createExtremaLessonConfigs(): LessonConfig[] {
       starterCode: [
         'indexOfMaxValue(numbers) {',
         '  let bestIndex = 0;',
-        '  for (let i = 1; i < numbers.length; i += 1) {',
-        '    if (numbers[i] > numbers[bestIndex]) {',
+        '  for (let i = 1; i < numbers.size(); i += 1) {',
+        '    if (numbers.get(i) > numbers.get(bestIndex)) {',
         '      bestIndex = i;',
         '    }',
         '  }',
@@ -58,6 +66,10 @@ export function createExtremaLessonConfigs(): LessonConfig[] {
         '}',
       ].join('\n'),
       genTest: (rng) => ({ args: [createNumberArray(rng, { lengthMin: 4, lengthMax: 8 })], note: 'If the max repeats, return the first index.' }),
+      hints: [
+        'Theo dõi vị trí lớn nhất: let bestIndex = 0;',
+        'So sánh giá trị tại bestIndex với giá trị tại i: if (numbers.get(i) > numbers.get(bestIndex)) { bestIndex = i; }'
+      ],
       solution: (numbers) => {
         const values = numbers as number[];
         let bestIndex = 0;
@@ -77,8 +89,8 @@ export function createExtremaLessonConfigs(): LessonConfig[] {
       starterCode: [
         'indexOfMinValue(numbers) {',
         '  let bestIndex = 0;',
-        '  for (let i = 1; i < numbers.length; i += 1) {',
-        '    if (numbers[i] < numbers[bestIndex]) {',
+        '  for (let i = 1; i < numbers.size(); i += 1) {',
+        '    if (numbers.get(i) < numbers.get(bestIndex)) {',
         '      bestIndex = i;',
         '    }',
         '  }',
@@ -86,6 +98,10 @@ export function createExtremaLessonConfigs(): LessonConfig[] {
         '}',
       ].join('\n'),
       genTest: (rng) => ({ args: [createNumberArray(rng, { lengthMin: 4, lengthMax: 8 })], note: 'If the min repeats, return the first index.' }),
+      hints: [
+        'Theo dõi vị trí nhỏ nhất: let bestIndex = 0;',
+        'So sánh: if (numbers.get(i) < numbers.get(bestIndex)) { bestIndex = i; }'
+      ],
       solution: (numbers) => {
         const values = numbers as number[];
         let bestIndex = 0;
@@ -104,15 +120,15 @@ export function createExtremaLessonConfigs(): LessonConfig[] {
       description: 'Find the maximum value first, then count how often it appears.',
       starterCode: [
         'countMaxOccurrences(numbers) {',
-        '  let max = numbers[0];',
-        '  for (let i = 1; i < numbers.length; i += 1) {',
-        '    if (numbers[i] > max) {',
-        '      max = numbers[i];',
+        '  let max = numbers.get(0);',
+        '  for (let i = 1; i < numbers.size(); i += 1) {',
+        '    if (numbers.get(i) > max) {',
+        '      max = numbers.get(i);',
         '    }',
         '  }',
         '  let count = 0;',
-        '  for (let i = 0; i < numbers.length; i += 1) {',
-        '    if (numbers[i] === max) {',
+        '  for (let i = 0; i < numbers.size(); i += 1) {',
+        '    if (numbers.get(i) === max) {',
         '      count += 1;',
         '    }',
         '  }',
@@ -120,6 +136,11 @@ export function createExtremaLessonConfigs(): LessonConfig[] {
         '}',
       ].join('\n'),
       genTest: (rng) => ({ args: [createNumberArray(rng, { lengthMin: 4, lengthMax: 9, valueMin: -4, valueMax: 7 })] }),
+      hints: [
+        'Cách đơn giản nhất là dùng 2 vòng lặp.',
+        'Vòng lặp 1: Tìm giá trị lớn nhất (max).',
+        'Vòng lặp 2: Đếm số lần giá trị max xuất hiện.'
+      ],
       solution: (numbers) => {
         const values = numbers as number[];
         const max = Math.max(...values);
@@ -134,13 +155,13 @@ export function createExtremaLessonConfigs(): LessonConfig[] {
       starterCode: [
         'mostFrequentValue(numbers) {',
         '  const counts = {};',
-        '  let bestValue = numbers[0];',
+        '  let bestValue = numbers.get(0);',
         '  let bestCount = 0;',
-        '  for (let i = 0; i < numbers.length; i += 1) {',
-        '    const value = numbers[i];',
-        '    counts[value] = (counts[value] || 0) + 1;',
-        '    if (counts[value] > bestCount || (counts[value] === bestCount && value < bestValue)) {',
-        '      bestCount = counts[value];',
+        '  for (let i = 0; i < numbers.size(); i += 1) {',
+        '    const value = numbers.get(i);',
+        '    counts.put(value, counts.getOrDefault(value, 0) + 1);',
+        '    if (counts.get(value) > bestCount || (counts.get(value) === bestCount && value < bestValue)) {',
+        '      bestCount = counts.get(value);',
         '      bestValue = value;',
         '    }',
         '  }',
@@ -148,6 +169,11 @@ export function createExtremaLessonConfigs(): LessonConfig[] {
         '}',
       ].join('\n'),
       genTest: (rng) => ({ args: [createNumberArray(rng, { lengthMin: 5, lengthMax: 10, valueMin: -2, valueMax: 5 })], note: 'Tie-breaker: smaller value wins.' }),
+      hints: [
+        'Sử dụng Object để đếm: const counts = {};',
+        'Tăng đếm bằng getOrDefault: counts.put(value, counts.getOrDefault(value, 0) + 1);',
+        'Lưu lại giá trị xuất hiện nhiều nhất trong lúc duyệt.'
+      ],
       solution: (numbers) => {
         const values = numbers as number[];
         const counts = new Map<number, number>();
@@ -172,22 +198,27 @@ export function createExtremaLessonConfigs(): LessonConfig[] {
       starterCode: [
         'secondExtreme(numbers, mode) {',
         '  const unique = [];',
-        '  for (let i = 0; i < numbers.length; i += 1) {',
-        '    if (!unique.includes(numbers[i])) {',
-        '      unique.push(numbers[i]);',
+        '  for (let i = 0; i < numbers.size(); i += 1) {',
+        '    if (!unique.includes(numbers.get(i))) {',
+        '      unique.add(numbers.get(i));',
         '    }',
         '  }',
         '  unique.sort((left, right) => left - right);',
-        '  if (unique.length < 2) {',
+        '  if (unique.size() < 2) {',
         '    return null;',
         '  }',
-        '  return mode === "largest" ? unique[unique.length - 2] : unique[1];',
+        '  return mode === "largest" ? unique.get(unique.size() - 2) : unique.get(1);',
         '}',
       ].join('\n'),
       genTest: (rng) => ({
         args: [createNumberArray(rng, { lengthMin: 4, lengthMax: 9, valueMin: -4, valueMax: 8 }), pickOne(rng, ['largest', 'smallest'])],
         note: 'Second means second distinct value.',
       }),
+      hints: [
+        'Có thể dùng mảng loại bỏ giá trị trùng lặp: unique.add(numbers.get(i));',
+        'Sắp xếp lại mảng vừa tìm được: unique.sort((a, b) => a - b);',
+        'Lấy vị trí tương ứng từ cuối mảng hoặc đầu mảng tùy theo yêu cầu lớn thứ 2 hay bé thứ 2.'
+      ],
       solution: (numbers, mode) => {
         const unique = Array.from(new Set(numbers as number[])).sort((left: number, right: number) => left - right);
         if (unique.length < 2) {

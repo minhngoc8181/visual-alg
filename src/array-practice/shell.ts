@@ -38,14 +38,19 @@ export function renderAppShell(container: HTMLElement): void {
             <div class="panel-body">
               <div class="field">
                 <label for="editor">Starter code</label>
-                <textarea id="editor" spellcheck="false"></textarea>
+                <div id="editor" class="cm-editor-host"></div>
               </div>
               <div class="actions">
                 <button id="runButton" class="primary" type="button">Run</button>
                 <button id="solutionButton" class="secondary" type="button">Solution</button>
                 <button id="resetButton" class="secondary" type="button">Reset Code</button>
               </div>
-              <p class="hint">Shortcut: Ctrl + Enter de chay nhanh. Enter tu dong can le, Tab/Shift+Tab de them hoac bot indent.</p>
+              <p class="hint editor-shortcuts">
+                <kbd>Ctrl+Enter</kbd> Chạy nhanh &nbsp;·&nbsp;
+                <kbd>Tab</kbd> / <kbd>Shift+Tab</kbd> Thêm / bớt indent &nbsp;·&nbsp;
+                <kbd>F9</kbd> Format code &nbsp;·&nbsp;
+                <kbd>}</kbd> Tự động căn lề
+              </p>
             </div>
           </article>
         </div>
@@ -79,6 +84,14 @@ export function renderAppShell(container: HTMLElement): void {
                 </div>
               </div>
               <div id="sampleCase" class="callout">A visible sample test will appear here for the selected lesson.</div>
+            </div>
+          </article>
+
+          <article class="panel" id="hintPanel" style="display: none;">
+            <div class="panel-header">
+              <h2 class="panel-title">Gợi ý (Hints)</h2>
+            </div>
+            <div class="panel-body" id="hintBody">
             </div>
           </article>
         </div>
@@ -119,7 +132,7 @@ export function getDomRefs(root: ParentNode = document): DomRefs {
     lessonDescription: mustElement<HTMLParagraphElement>(root, '#lessonDescription'),
     methodName: mustElement<HTMLElement>(root, '#methodName'),
     testCount: mustElement<HTMLElement>(root, '#testCount'),
-    editor: mustElement<HTMLTextAreaElement>(root, '#editor'),
+    editorHost: mustElement<HTMLDivElement>(root, '#editor'),
     runButton: mustElement<HTMLButtonElement>(root, '#runButton'),
     solutionButton: mustElement<HTMLButtonElement>(root, '#solutionButton'),
     resetButton: mustElement<HTMLButtonElement>(root, '#resetButton'),
@@ -131,6 +144,8 @@ export function getDomRefs(root: ParentNode = document): DomRefs {
     summarySeed: mustElement<HTMLElement>(root, '#summarySeed'),
     resultsBody: mustElement<HTMLTableSectionElement>(root, '#resultsBody'),
     sampleCase: mustElement<HTMLDivElement>(root, '#sampleCase'),
+    hintPanel: mustElement<HTMLElement>(root, '#hintPanel'),
+    hintBody: mustElement<HTMLElement>(root, '#hintBody'),
   };
 }
 

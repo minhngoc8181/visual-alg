@@ -14,8 +14,8 @@ export function createLookupLessonConfigs(): LessonConfig[] {
       description: 'Return the first index where target appears, or -1 if it does not exist.',
       starterCode: [
         'indexOfValue(numbers, target) {',
-        '  for (let i = 0; i < numbers.length; i += 1) {',
-        '    if (numbers[i] === target) {',
+        '  for (let i = 0; i < numbers.size(); i += 1) {',
+        '    if (numbers.get(i) === target) {',
         '      return i;',
         '    }',
         '  }',
@@ -27,6 +27,10 @@ export function createLookupLessonConfigs(): LessonConfig[] {
         const target = randomInt(rng, -5, 9);
         return { args: [numbers, target], note: 'First occurrence wins.' };
       },
+      hints: [
+        'Dùng vòng lặp for từ 0 đến mảng.size() - 1',
+        'if (numbers.get(i) === target) { return i; }',
+      ],
       solution: (numbers, target) => (numbers as number[]).indexOf(target as number),
     },
     {
@@ -36,8 +40,8 @@ export function createLookupLessonConfigs(): LessonConfig[] {
       description: 'Return the last index where target appears, or -1 if it does not exist.',
       starterCode: [
         'lastIndexOfValue(numbers, target) {',
-        '  for (let i = numbers.length - 1; i >= 0; i -= 1) {',
-        '    if (numbers[i] === target) {',
+        '  for (let i = numbers.size() - 1; i >= 0; i -= 1) {',
+        '    if (numbers.get(i) === target) {',
         '      return i;',
         '    }',
         '  }',
@@ -49,6 +53,10 @@ export function createLookupLessonConfigs(): LessonConfig[] {
         const target = randomInt(rng, -5, 9);
         return { args: [numbers, target], note: 'Last occurrence wins.' };
       },
+      hints: [
+        'Dùng vòng lặp for chạy ngược từ cuối mảng:',
+        'for (let i = numbers.size() - 1; i >= 0; i -= 1) { ... }'
+      ],
       solution: (numbers, target) => (numbers as number[]).lastIndexOf(target as number),
     },
     {
@@ -58,8 +66,8 @@ export function createLookupLessonConfigs(): LessonConfig[] {
       description: 'Return true when target exists in the array, otherwise false.',
       starterCode: [
         'containsValue(numbers, target) {',
-        '  for (let i = 0; i < numbers.length; i += 1) {',
-        '    if (numbers[i] === target) {',
+        '  for (let i = 0; i < numbers.size(); i += 1) {',
+        '    if (numbers.get(i) === target) {',
         '      return true;',
         '    }',
         '  }',
@@ -69,6 +77,10 @@ export function createLookupLessonConfigs(): LessonConfig[] {
       genTest: (rng) => ({
         args: [createNumberArray(rng, { lengthMin: 4, lengthMax: 8 }), randomInt(rng, -5, 9)],
       }),
+      hints: [
+        'Dùng vòng lặp tìm kiếm. Nếu thấy trả về true ngay lập tức.',
+        'Kết thúc vòng lặp không thấy thì trả về false.'
+      ],
       solution: (numbers, target) => (numbers as number[]).includes(target as number),
     },
     {
@@ -79,8 +91,8 @@ export function createLookupLessonConfigs(): LessonConfig[] {
       starterCode: [
         'countOccurrences(numbers, target) {',
         '  let count = 0;',
-        '  for (let i = 0; i < numbers.length; i += 1) {',
-        '    if (numbers[i] === target) {',
+        '  for (let i = 0; i < numbers.size(); i += 1) {',
+        '    if (numbers.get(i) === target) {',
         '      count += 1;',
         '    }',
         '  }',
@@ -90,6 +102,10 @@ export function createLookupLessonConfigs(): LessonConfig[] {
       genTest: (rng) => ({
         args: [createNumberArray(rng, { lengthMin: 5, lengthMax: 10, valueMin: -2, valueMax: 6 }), randomInt(rng, -2, 6)],
       }),
+      hints: [
+        'Khởi tạo biến đếm: let count = 0;',
+        'Mỗi khi tìm thấy target thì: count += 1;'
+      ],
       solution: (numbers, target) => (numbers as number[]).filter((value: number) => value === (target as number)).length,
     },
     {
@@ -100,15 +116,19 @@ export function createLookupLessonConfigs(): LessonConfig[] {
       starterCode: [
         'allIndicesOfValue(numbers, target) {',
         '  const indices = [];',
-        '  for (let i = 0; i < numbers.length; i += 1) {',
-        '    if (numbers[i] === target) {',
-        '      indices.push(i);',
+        '  for (let i = 0; i < numbers.size(); i += 1) {',
+        '    if (numbers.get(i) === target) {',
+        '      indices.add(i);',
         '    }',
         '  }',
         '  return indices;',
         '}',
       ].join('\n'),
       genTest: (rng) => ({ args: [createNumberArray(rng, { lengthMin: 5, lengthMax: 10, valueMin: -2, valueMax: 5 }), randomInt(rng, -2, 5)] }),
+      hints: [
+        'Khởi tạo mảng rỗng: const indices = [];',
+        'Thêm index vào kết quả: indices.add(i);'
+      ],
       solution: (numbers, target) => {
         const indices: number[] = [];
         for (let i = 0; i < (numbers as number[]).length; i += 1) {
@@ -126,8 +146,8 @@ export function createLookupLessonConfigs(): LessonConfig[] {
       description: 'Return true when the array is already sorted in non-decreasing order.',
       starterCode: [
         'isSortedAscending(numbers) {',
-        '  for (let i = 1; i < numbers.length; i += 1) {',
-        '    if (numbers[i] < numbers[i - 1]) {',
+        '  for (let i = 1; i < numbers.size(); i += 1) {',
+        '    if (numbers.get(i) < numbers.get(i - 1)) {',
         '      return false;',
         '    }',
         '  }',
@@ -137,6 +157,10 @@ export function createLookupLessonConfigs(): LessonConfig[] {
       genTest: (rng) => ({
         args: [rng() > 0.5 ? createSortedArray(rng, { lengthMin: 4, lengthMax: 8 }) : createNumberArray(rng, { lengthMin: 4, lengthMax: 8, valueMin: -8, valueMax: 10 })],
       }),
+      hints: [
+        'Kiểm tra từng cặp liền kề: if (numbers.get(i) < numbers.get(i - 1)) { return false; }',
+        'Nếu không có vi phạm nào sau vòng lặp thì mảng đã sắp xếp (return true).'
+      ],
       solution: (numbers) => {
         const values = numbers as number[];
         for (let i = 1; i < values.length; i += 1) {

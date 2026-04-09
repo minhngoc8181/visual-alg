@@ -1,7 +1,8 @@
 import '../styles/reset.css';
 import '../styles/array-practice.css';
 
-import { handleEditorKeydown } from './editor';
+import type { EditorView } from '@codemirror/view';
+import { createCodeMirrorEditor, setEditorValue, getEditorValue } from './codemirror-editor';
 import { createLessons } from './lessons';
 import { deepEqual } from './comparison';
 import {
@@ -35,9 +36,27 @@ const draftByLesson: Record<string, string> = persisted.draftByLesson || {};
 let selectedLessonId = lessonMap.has(persisted.lessonId || '') ? persisted.lessonId || lessons[0]!.id : lessons[0]!.id;
 let isRunning = false;
 
+// ─── CodeMirror setup ────────────────────────────────────────────────────────
+
+const initialLesson = lessonMap.get(selectedLessonId)!;
+const initialCode = draftByLesson[selectedLessonId] || initialLesson.starterCode;
+
+let cmView: EditorView = createCodeMirrorEditor(
+  dom.editorHost,
+  initialCode,
+  (newValue) => {
+    draftByLesson[selectedLessonId] = newValue;
+    persistState();
+  },
+);
+
+// ─── Init ────────────────────────────────────────────────────────────────────
+
 renderLessonOptions();
 syncLessonView();
 renderIdleSummary();
+
+// ─── Event listeners ─────────────────────────────────────────────────────────
 
 dom.lessonSelect.addEventListener('change', () => {
   persistCurrentDraft();
@@ -47,25 +66,16 @@ dom.lessonSelect.addEventListener('change', () => {
   clearResults();
 });
 
-dom.editor.addEventListener('input', () => {
-  draftByLesson[selectedLessonId] = dom.editor.value;
-  persistState();
-});
-
-dom.editor.addEventListener('keydown', (event) => {
-  handleEditorKeydown(event, dom.editor, rememberEditorDraft);
-});
-
 dom.resetButton.addEventListener('click', () => {
   const lesson = getSelectedLesson();
-  dom.editor.value = lesson.starterCode;
+  setEditorValue(cmView, lesson.starterCode);
   draftByLesson[selectedLessonId] = lesson.starterCode;
   persistState();
 });
 
 dom.solutionButton.addEventListener('click', () => {
   const lesson = getSelectedLesson();
-  dom.editor.value = lesson.solutionCode;
+  setEditorValue(cmView, lesson.solutionCode);
   draftByLesson[selectedLessonId] = lesson.solutionCode;
   persistState();
 });
@@ -83,6 +93,8 @@ window.addEventListener('keydown', (event) => {
   }
 });
 
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
 function getSelectedLesson(): Lesson {
   const lesson = lessonMap.get(selectedLessonId);
   if (!lesson) {
@@ -91,13 +103,8 @@ function getSelectedLesson(): Lesson {
   return lesson;
 }
 
-function rememberEditorDraft(): void {
-  draftByLesson[selectedLessonId] = dom.editor.value;
-  persistState();
-}
-
 function persistCurrentDraft(): void {
-  draftByLesson[selectedLessonId] = dom.editor.value;
+  draftByLesson[selectedLessonId] = getEditorValue(cmView);
 }
 
 function persistState(): void {
@@ -124,7 +131,22 @@ function syncLessonView(): void {
   dom.lessonDescription.textContent = lesson.description;
   dom.methodName.textContent = lesson.methodName;
   dom.testCount.textContent = `${lesson.testCount} total / ${lesson.visibleTestCount} shown`;
-  dom.editor.value = draftByLesson[lesson.id] || lesson.starterCode;
+
+  setEditorValue(cmView, draftByLesson[lesson.id] || lesson.starterCode);
+
+  if (lesson.hints && lesson.hints.length > 0) {
+    dom.hintPanel.style.display = 'block';
+    dom.hintBody.innerHTML = `
+      <div class="callout hint-box">
+        <ul class="hint-list">
+          ${lesson.hints.map((hint) => `<li class="hint-item mono">${hint}</li>`).join('')}
+        </ul>
+      </div>
+    `;
+  } else {
+    dom.hintPanel.style.display = 'none';
+  }
+
   renderSampleCase(lesson);
 }
 
@@ -155,7 +177,7 @@ function renderIdleSummary(): void {
 
 async function runSelectedLesson(): Promise<void> {
   const lesson = getSelectedLesson();
-  const source = dom.editor.value.trim();
+  const source = getEditorValue(cmView).trim();
 
   if (!source) {
     renderSummary({ badge: 'failed', message: 'Editor is empty.', total: 0, passed: 0, failed: 0, seed: '-' });
@@ -278,7 +300,9 @@ function setRunning(nextRunning: boolean): void {
   dom.solutionButton.disabled = nextRunning;
   dom.resetButton.disabled = nextRunning;
   dom.lessonSelect.disabled = nextRunning;
-  dom.editor.disabled = nextRunning;
+
+  // Disable/enable CodeMirror editing
+  cmView.contentDOM.contentEditable = nextRunning ? 'false' : 'true';
 
   if (nextRunning) {
     dom.summaryBadge.className = 'badge idle';

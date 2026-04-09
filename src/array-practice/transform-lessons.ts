@@ -18,13 +18,17 @@ export function createTransformLessonConfigs(): LessonConfig[] {
       starterCode: [
         'reverseArray(numbers) {',
         '  const reversed = [];',
-        '  for (let i = numbers.length - 1; i >= 0; i -= 1) {',
-        '    reversed.push(numbers[i]);',
+        '  for (let i = numbers.size() - 1; i >= 0; i -= 1) {',
+        '    reversed.add(numbers.get(i));',
         '  }',
         '  return reversed;',
         '}',
       ].join('\n'),
       genTest: (rng) => ({ args: [createNumberArray(rng, { lengthMin: 4, lengthMax: 9 })] }),
+      hints: [
+        'Tạo mảng kết quả: const reversed = [];',
+        'Duyệt ngược mảng gốc và thêm vào: for (let i = numbers.size() - 1; i >= 0; i -= 1) { reversed.add(numbers.get(i)); }'
+      ],
       solution: (numbers) => (numbers as number[]).slice().reverse(),
     },
     {
@@ -35,12 +39,12 @@ export function createTransformLessonConfigs(): LessonConfig[] {
       starterCode: [
         'sortAscending(numbers) {',
         '  const sorted = numbers.slice();',
-        '  for (let i = 0; i < sorted.length - 1; i += 1) {',
-        '    for (let j = 0; j < sorted.length - 1 - i; j += 1) {',
-        '      if (sorted[j] > sorted[j + 1]) {',
-        '        const temp = sorted[j];',
-        '        sorted[j] = sorted[j + 1];',
-        '        sorted[j + 1] = temp;',
+        '  for (let i = 0; i < sorted.size() - 1; i += 1) {',
+        '    for (let j = 0; j < sorted.size() - 1 - i; j += 1) {',
+        '      if (sorted.get(j) > sorted.get(j + 1)) {',
+        '        const temp = sorted.get(j);',
+        '        sorted.set(j, sorted.get(j + 1));',
+        '        sorted.set(j + 1, temp);',
         '      }',
         '    }',
         '  }',
@@ -48,6 +52,10 @@ export function createTransformLessonConfigs(): LessonConfig[] {
         '}',
       ].join('\n'),
       genTest: (rng) => ({ args: [createNumberArray(rng, { lengthMin: 4, lengthMax: 8, valueMin: -9, valueMax: 12 })] }),
+      hints: [
+        'Có thể dùng thuật toán nổi bọt (Bubble Sort) với 2 vòng lặp lồng nhau.',
+        'Đổi chỗ hai phần tử: const temp = sorted.get(j); sorted.set(j, sorted.get(j + 1)); sorted.set(j + 1, temp);'
+      ],
       solution: (numbers) => (numbers as number[]).slice().sort((left: number, right: number) => left - right),
     },
     {
@@ -58,12 +66,12 @@ export function createTransformLessonConfigs(): LessonConfig[] {
       starterCode: [
         'sortDescending(numbers) {',
         '  const sorted = numbers.slice();',
-        '  for (let i = 0; i < sorted.length - 1; i += 1) {',
-        '    for (let j = 0; j < sorted.length - 1 - i; j += 1) {',
-        '      if (sorted[j] < sorted[j + 1]) {',
-        '        const temp = sorted[j];',
-        '        sorted[j] = sorted[j + 1];',
-        '        sorted[j + 1] = temp;',
+        '  for (let i = 0; i < sorted.size() - 1; i += 1) {',
+        '    for (let j = 0; j < sorted.size() - 1 - i; j += 1) {',
+        '      if (sorted.get(j) < sorted.get(j + 1)) {',
+        '        const temp = sorted.get(j);',
+        '        sorted.set(j, sorted.get(j + 1));',
+        '        sorted.set(j + 1, temp);',
         '      }',
         '    }',
         '  }',
@@ -71,6 +79,9 @@ export function createTransformLessonConfigs(): LessonConfig[] {
         '}',
       ].join('\n'),
       genTest: (rng) => ({ args: [createNumberArray(rng, { lengthMin: 4, lengthMax: 8, valueMin: -9, valueMax: 12 })] }),
+      hints: [
+        'Tương tự sắp xếp tăng dần, nhưng đổi chiều so sánh thành: if (sorted.get(j) < sorted.get(j + 1))'
+      ],
       solution: (numbers) => (numbers as number[]).slice().sort((left: number, right: number) => right - left),
     },
     {
@@ -81,15 +92,19 @@ export function createTransformLessonConfigs(): LessonConfig[] {
       starterCode: [
         'removeDuplicates(numbers) {',
         '  const result = [];',
-        '  for (let i = 0; i < numbers.length; i += 1) {',
-        '    if (!result.includes(numbers[i])) {',
-        '      result.push(numbers[i]);',
+        '  for (let i = 0; i < numbers.size(); i += 1) {',
+        '    if (!result.includes(numbers.get(i))) {',
+        '      result.add(numbers.get(i));',
         '    }',
         '  }',
         '  return result;',
         '}',
       ].join('\n'),
       genTest: (rng) => ({ args: [createNumberArray(rng, { lengthMin: 6, lengthMax: 10, valueMin: -3, valueMax: 4 })] }),
+      hints: [
+        'Khởi tạo mảng kết quả: const result = [];',
+        'Chỉ thêm vào result nếu giá trị đó chưa có: if (!result.includes(numbers.get(i)))'
+      ],
       solution: (numbers) => Array.from(new Set(numbers as number[])),
     },
     {
@@ -100,20 +115,20 @@ export function createTransformLessonConfigs(): LessonConfig[] {
       starterCode: [
         'pairsWithTargetSum(numbers, target) {',
         '  const pairs = [];',
-        '  for (let i = 0; i < numbers.length; i += 1) {',
-        '    for (let j = i + 1; j < numbers.length; j += 1) {',
-        '      if (numbers[i] + numbers[j] === target) {',
-        '        const pair = numbers[i] <= numbers[j] ? [numbers[i], numbers[j]] : [numbers[j], numbers[i]];',
+        '  for (let i = 0; i < numbers.size(); i += 1) {',
+        '    for (let j = i + 1; j < numbers.size(); j += 1) {',
+        '      if (numbers.get(i) + numbers.get(j) === target) {',
+        '        const pair = numbers.get(i) <= numbers.get(j) ? [numbers.get(i), numbers.get(j)] : [numbers.get(j), numbers.get(i)];',
         '        const key = pair[0] + ":" + pair[1];',
         '        let seen = false;',
-        '        for (let k = 0; k < pairs.length; k += 1) {',
-        '          if (pairs[k][0] + ":" + pairs[k][1] === key) {',
+        '        for (let k = 0; k < pairs.size(); k += 1) {',
+        '          if (pairs.get(k)[0] + ":" + pairs.get(k)[1] === key) {',
         '            seen = true;',
         '            break;',
         '          }',
         '        }',
         '        if (!seen) {',
-        '          pairs.push(pair);',
+        '          pairs.add(pair);',
         '        }',
         '      }',
         '    }',
@@ -125,6 +140,10 @@ export function createTransformLessonConfigs(): LessonConfig[] {
         args: [createNumberArray(rng, { lengthMin: 5, lengthMax: 9, valueMin: -3, valueMax: 9 }), randomInt(rng, 0, 10)],
         note: 'Pairs are unique by value, not by index order.',
       }),
+      hints: [
+        'Dùng 2 vòng lặp lồng nhau đễ xét từng cặp: cho i từ 0.., j từ i + 1..',
+        'Cẩn thận ghi nhận cặp duy nhất để tránh trùng lặp vào mảng kết quả.'
+      ],
       solution: (numbers, target) => {
         const values = numbers as number[];
         const desired = target as number;
@@ -157,7 +176,7 @@ export function createTransformLessonConfigs(): LessonConfig[] {
       description: 'Return a new array rotated left or right by k positions.',
       starterCode: [
         'rotateArray(numbers, k, direction) {',
-        '  const length = numbers.length;',
+        '  const length = numbers.size();',
         '  const shift = ((k % length) + length) % length;',
         '  if (shift === 0) {',
         '    return numbers.slice();',
@@ -171,6 +190,10 @@ export function createTransformLessonConfigs(): LessonConfig[] {
       genTest: (rng) => ({
         args: [createNumberArray(rng, { lengthMin: 4, lengthMax: 8 }), randomInt(rng, 0, 12), pickOne(rng, ['left', 'right'])],
       }),
+      hints: [
+        'Xử lý số lần dịch k có thể lớn hơn độ dài mảng: const shift = ((k % length) + length) % length;',
+        'Tách mảng bằng slice và nối lại bằng concat.'
+      ],
       solution: (numbers, k, direction) => {
         const values = numbers as number[];
         const shiftBase = k as number;
@@ -195,8 +218,8 @@ export function createTransformLessonConfigs(): LessonConfig[] {
         'longestConsecutiveRun(numbers) {',
         '  let best = 1;',
         '  let current = 1;',
-        '  for (let i = 1; i < numbers.length; i += 1) {',
-        '    if (numbers[i] === numbers[i - 1]) {',
+        '  for (let i = 1; i < numbers.size(); i += 1) {',
+        '    if (numbers.get(i) === numbers.get(i - 1)) {',
         '      current += 1;',
         '      if (current > best) {',
         '        best = current;',
@@ -209,6 +232,10 @@ export function createTransformLessonConfigs(): LessonConfig[] {
         '}',
       ].join('\n'),
       genTest: (rng) => ({ args: [createNumberArray(rng, { lengthMin: 5, lengthMax: 10, valueMin: 0, valueMax: 4 })] }),
+      hints: [
+        'Giữ một chuỗi hiện tại và chuỗi dài nhất: let best = 1; let current = 1;',
+        'Cộng dồn current nếu numbers.get(i) === numbers.get(i-1), ngược lại reset current về 1.'
+      ],
       solution: (numbers) => {
         const values = numbers as number[];
         let best = 1;
@@ -234,21 +261,21 @@ export function createTransformLessonConfigs(): LessonConfig[] {
         '  const merged = [];',
         '  let i = 0;',
         '  let j = 0;',
-        '  while (i < left.length && j < right.length) {',
-        '    if (left[i] <= right[j]) {',
-        '      merged.push(left[i]);',
+        '  while (i < left.size() && j < right.size()) {',
+        '    if (left.get(i) <= right.get(j)) {',
+        '      merged.add(left.get(i));',
         '      i += 1;',
         '    } else {',
-        '      merged.push(right[j]);',
+        '      merged.add(right.get(j));',
         '      j += 1;',
         '    }',
         '  }',
-        '  while (i < left.length) {',
-        '    merged.push(left[i]);',
+        '  while (i < left.size()) {',
+        '    merged.add(left.get(i));',
         '    i += 1;',
         '  }',
-        '  while (j < right.length) {',
-        '    merged.push(right[j]);',
+        '  while (j < right.size()) {',
+        '    merged.add(right.get(j));',
         '    j += 1;',
         '  }',
         '  return merged;',
@@ -257,6 +284,11 @@ export function createTransformLessonConfigs(): LessonConfig[] {
       genTest: (rng) => ({
         args: [createSortedArray(rng, { lengthMin: 3, lengthMax: 6, valueMin: -6, valueMax: 8 }), createSortedArray(rng, { lengthMin: 3, lengthMax: 6, valueMin: -6, valueMax: 8 })],
       }),
+      hints: [
+        'Chạy 2 con trỏ i và j song song trên hai mảng left và right.',
+        'So sánh left.get(i) và right.get(j), lấy số nhỏ hơn thêm vào mảng merged.',
+        'Sau vòng lặp, đừng quên add() các phần tử còn lại của mảng kia.'
+      ],
       solution: (left, right) => (left as number[]).concat(right as number[]).sort((a: number, b: number) => a - b),
     },
     {
@@ -266,11 +298,11 @@ export function createTransformLessonConfigs(): LessonConfig[] {
       description: 'The array contains every number from 0 to n except one. Return the missing number.',
       starterCode: [
         'missingNumber(numbers) {',
-        '  const n = numbers.length;',
+        '  const n = numbers.size();',
         '  let expected = (n * (n + 1)) / 2;',
         '  let actual = 0;',
-        '  for (let i = 0; i < numbers.length; i += 1) {',
-        '    actual += numbers[i];',
+        '  for (let i = 0; i < numbers.size(); i += 1) {',
+        '    actual += numbers.get(i);',
         '  }',
         '  return expected - actual;',
         '}',
@@ -287,6 +319,10 @@ export function createTransformLessonConfigs(): LessonConfig[] {
         shuffleInPlace(numbers, rng);
         return { args: [numbers], note: 'Input order is not guaranteed.' };
       },
+      hints: [
+        'Cách hiệu quả là tính tổng dãy đầy đủ bằng công thức: n * (n + 1) / 2',
+        'Tính tổng thực tế mảng truyền vào, hiệu hai tổng sẽ ra số bị thiếu.'
+      ],
       solution: (numbers) => {
         const values = numbers as number[];
         const n = values.length;
