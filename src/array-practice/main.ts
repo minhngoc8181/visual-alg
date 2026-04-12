@@ -33,6 +33,7 @@ const lessons = createLessons() as Lesson[];
 const lessonMap = new Map(lessons.map((lesson) => [lesson.id, lesson]));
 const persisted = loadPersistedState(STORAGE_KEY);
 const draftByLesson: Record<string, string> = persisted.draftByLesson || {};
+const resultsByLesson: Record<string, 'accepted' | 'failed' | 'partial'> = persisted.resultsByLesson || {};
 let selectedLessonId = lessonMap.has(persisted.lessonId || '') ? persisted.lessonId || lessons[0]!.id : lessons[0]!.id;
 let isRunning = false;
 
@@ -53,6 +54,7 @@ let cmView: EditorView = createCodeMirrorEditor(
 // ─── Init ────────────────────────────────────────────────────────────────────
 
 renderLessonOptions();
+renderLessonStats();
 syncLessonView();
 renderIdleSummary();
 
@@ -111,6 +113,7 @@ function persistState(): void {
   savePersistedState(STORAGE_KEY, {
     lessonId: selectedLessonId,
     draftByLesson,
+    resultsByLesson,
   });
 }
 
@@ -119,10 +122,27 @@ function renderLessonOptions(): void {
     ...lessons.map((lesson) => {
       const option = document.createElement('option');
       option.value = lesson.id;
-      option.textContent = lesson.title;
+      const status = resultsByLesson[lesson.id];
+      const icon = status === 'accepted' ? '✅ ' : (status === 'failed' || status === 'partial' ? '❌ ' : '');
+      option.textContent = icon + lesson.title;
       return option;
     }),
   );
+  dom.lessonSelect.value = selectedLessonId;
+}
+
+function renderLessonStats(): void {
+  let passedCount = 0;
+  let failedCount = 0;
+  for (const status of Object.values(resultsByLesson)) {
+    if (status === 'accepted') passedCount += 1;
+    if (status === 'failed' || status === 'partial') failedCount += 1;
+  }
+  if (passedCount > 0 || failedCount > 0) {
+    dom.lessonStats.textContent = `(✅ ${passedCount} | ❌ ${failedCount})`;
+  } else {
+    dom.lessonStats.textContent = '';
+  }
 }
 
 function syncLessonView(): void {
@@ -262,9 +282,11 @@ async function runSelectedLesson(): Promise<void> {
       });
     }
 
+    const newBadge = passed === rows.length ? 'accepted' : passed === 0 ? 'failed' : 'partial';
+
     renderRows(rows);
     renderSummary({
-      badge: passed === rows.length ? 'accepted' : passed === 0 ? 'failed' : 'partial',
+      badge: newBadge,
       message:
         passed === rows.length
           ? 'All generated tests passed.'
@@ -276,6 +298,11 @@ async function runSelectedLesson(): Promise<void> {
       failed: rows.length - passed,
       seed: suite.seed,
     });
+
+    resultsByLesson[lesson.id] = newBadge;
+    persistState();
+    renderLessonOptions();
+    renderLessonStats();
   } catch (error) {
     renderSummary({ badge: 'failed', message: 'Run aborted because of an unexpected error.', total: 0, passed: 0, failed: 0, seed: '-' });
     renderRows([

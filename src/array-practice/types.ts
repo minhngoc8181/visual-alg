@@ -1,5 +1,6 @@
 export interface DomRefs {
   lessonSelect: HTMLSelectElement;
+  lessonStats: HTMLSpanElement;
   lessonDescription: HTMLParagraphElement;
   methodName: HTMLElement;
   testCount: HTMLElement;
@@ -22,6 +23,7 @@ export interface DomRefs {
 export interface PersistedState {
   lessonId?: string;
   draftByLesson?: Record<string, string>;
+  resultsByLesson?: Record<string, 'accepted' | 'failed' | 'partial'>;
 }
 
 export interface RawTestCase {

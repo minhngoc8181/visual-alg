@@ -11,7 +11,7 @@ export function renderAppShell(container: HTMLElement): void {
         <div class="stack">
           <article class="panel">
             <div class="panel-header">
-              <h2 class="panel-title">Lesson</h2>
+              <h2 class="panel-title">Lesson <span id="lessonStats" style="font-size: 0.85em; font-weight: normal; margin-left: 8px; color: var(--text-2);"></span></h2>
             </div>
             <div class="panel-body">
               <div class="field">
@@ -129,6 +129,7 @@ export function renderAppShell(container: HTMLElement): void {
 export function getDomRefs(root: ParentNode = document): DomRefs {
   return {
     lessonSelect: mustElement<HTMLSelectElement>(root, '#lessonSelect'),
+    lessonStats: mustElement<HTMLSpanElement>(root, '#lessonStats'),
     lessonDescription: mustElement<HTMLParagraphElement>(root, '#lessonDescription'),
     methodName: mustElement<HTMLElement>(root, '#methodName'),
     testCount: mustElement<HTMLElement>(root, '#testCount'),

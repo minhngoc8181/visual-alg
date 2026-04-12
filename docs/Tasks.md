@@ -123,6 +123,9 @@ Status: in progress
 - [x] Reset code button
 - [x] Show lesson description and method name
 - [x] Summary badge: Accepted / Partial / Failed
+- [x] Track passed/failed lessons in LocalStorage
+- [x] Show global pass/fail statistics next to lesson header
+- [x] Add green check (✅) and red cross (❌) emojis to dropdown options based on completion status
 
 ---
 

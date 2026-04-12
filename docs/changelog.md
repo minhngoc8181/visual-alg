@@ -10,6 +10,7 @@
 - Increased total test execution limits from 14 to 20 tests.
 - Implemented `auto_run_test()` global console script for automated full-suite testing in the DOM.
 - Fixed core Javascript `Math.floor` behavior to properly simulate Java integer division algorithm logic.
+- Added LocalStorage tracking for lesson completion status, appending pass/fail counts to the UI header and status emojis (✅/❌) to the lesson selection dropdown.
 
 ---
 
