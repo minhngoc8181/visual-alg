@@ -137,7 +137,7 @@ export function createPositiveArray(rng: () => number, options: NumberArrayOptio
   return numbers;
 }
 
-export function createFunctionalGraphArray(rng: () => number, n: number, cycleLen: number): number[] {
+export function createFunctionalGraphArray(_rng: () => number, n: number, cycleLen: number): number[] {
   // Build an array of size n where following arr[0] -> arr[arr[0]] -> ... eventually enters a cycle.
   // Tail: indices 0..tailLen-1 form a chain, then connect to cycle.
   const tailLen = Math.max(1, n - cycleLen);

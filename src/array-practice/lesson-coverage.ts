@@ -1,6 +1,5 @@
 import type { PlannedTestCaseFactory, RawTestCase } from './types';
 import {
-  createFunctionalGraphArray,
   createLookupArray,
   createMissingNumberCase,
   createSortedFromPattern,
