@@ -85,7 +85,7 @@ Unsupported constructs are rejected with friendly validation messages.
 
 ## Practice Runner — How It Works
 
-1. Select a lesson from 25 array problems
+1. Select a lesson from 34 array problems
 2. Write a JavaScript method in the browser editor
 3. Click Run — fresh test cases are generated
 4. Expected answers computed from trusted reference solutions

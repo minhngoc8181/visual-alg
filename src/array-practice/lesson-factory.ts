@@ -2,7 +2,7 @@ import { createCoveragePlan } from './lesson-coverage';
 import { createLessonDefaults, createMinimalStarterCode } from './lesson-helpers';
 import type { Lesson, LessonConfig } from './types';
 
-const DEFAULT_TOTAL_TESTS = 14;
+const DEFAULT_TOTAL_TESTS = 20;
 const DEFAULT_VISIBLE_TESTS = 5;
 
 export function createArrayLesson(config: LessonConfig): Lesson {

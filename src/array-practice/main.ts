@@ -347,3 +347,51 @@ function createCell(text: string, className?: string): HTMLTableCellElement {
   }
   return td;
 }
+
+// ─── Automated Testing ───────────────────────────────────────────────────────
+
+;(window as any).auto_run_test = async function () {
+  console.log('Starting auto_run_test for all lessons...');
+  const report: { id: string; title: string; status: string }[] = [];
+
+  for (const lesson of lessons) {
+    console.log(`Testing lesson: ${lesson.title}`);
+    
+    // Select lesson
+    dom.lessonSelect.value = lesson.id;
+    dom.lessonSelect.dispatchEvent(new Event('change'));
+    
+    // Wait a bit
+    await new Promise((r) => setTimeout(r, 500));
+    
+    // Click Solution
+    dom.solutionButton.click();
+    await new Promise((r) => setTimeout(r, 500));
+    
+    // Click Run
+    dom.runButton.click();
+    
+    // Wait until running finishes
+    while (isRunning) {
+      await new Promise((r) => setTimeout(r, 200));
+    }
+    
+    // Additional brief pause to let UI settle
+    await new Promise((r) => setTimeout(r, 200));
+    
+    const badgeText = dom.summaryBadge.textContent || 'Unknown';
+    console.log(`  Result: ${badgeText}`);
+    report.push({ id: lesson.id, title: lesson.title, status: badgeText });
+  }
+
+  console.log('--- AUTO RUN REPORT ---');
+  console.table(report);
+  
+  const allPassed = report.every(r => r.status.toLowerCase() === 'accepted');
+  if (allPassed) {
+    console.log('%c All tests passed automatically!', 'color: green; font-weight: bold; font-size: 14px');
+  } else {
+    console.log('%c Some tests did not pass.', 'color: red; font-weight: bold; font-size: 14px');
+  }
+};
+

@@ -2,6 +2,17 @@
 
 ---
 
+## 2026-04-12
+
+### Practice Runner (Phase 2 - Advanced Algorithms)
+- Added 9 advanced array practice problems covering Two Pointers, Sliding Window, Prefix Sum, and Binary Search strategies.
+- Scaled up robustness of Random hidden test generators to now use up to `100K-200K elements` to effectively stress-test $O(n)$ and $O(\log n)$ algorithms.
+- Increased total test execution limits from 14 to 20 tests.
+- Implemented `auto_run_test()` global console script for automated full-suite testing in the DOM.
+- Fixed core Javascript `Math.floor` behavior to properly simulate Java integer division algorithm logic.
+
+---
+
 ## 2026-04-08
 
 ### Visualizer (Phase 1)

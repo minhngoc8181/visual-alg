@@ -17,6 +17,7 @@ export function createLessonDefaults(lessonId: string): LessonDefault {
     case 'last-index-of':
     case 'index-of-max':
     case 'index-of-min':
+    case 'binary-search':
       return { defaultReturn: '-1' };
     case 'contains-value':
     case 'is-sorted':
@@ -29,7 +30,12 @@ export function createLessonDefaults(lessonId: string): LessonDefault {
     case 'pairs-with-sum':
     case 'rotate':
     case 'merge-sorted':
+    case 'intersect-sorted':
+    case 'build-prefix-sum':
+    case 'range-sum-queries':
       return { defaultReturn: '[]' };
+    case 'two-sum-sorted':
+      return { defaultReturn: '[-1, -1]' };
     case 'second-extreme':
       return { defaultReturn: 'null' };
     default:
@@ -118,6 +124,39 @@ export function shuffleInPlace<T>(values: T[], rng: () => number): void {
     values[index] = values[nextIndex]!;
     values[nextIndex] = temp;
   }
+}
+
+export function createPositiveArray(rng: () => number, options: NumberArrayOptions = {}): number[] {
+  const length = randomInt(rng, options.lengthMin || 4, options.lengthMax || 8);
+  const valueMin = Math.max(1, options.valueMin ?? 1);
+  const valueMax = options.valueMax ?? 10;
+  const numbers: number[] = [];
+  for (let index = 0; index < length; index += 1) {
+    numbers.push(randomInt(rng, valueMin, valueMax));
+  }
+  return numbers;
+}
+
+export function createFunctionalGraphArray(rng: () => number, n: number, cycleLen: number): number[] {
+  // Build an array of size n where following arr[0] -> arr[arr[0]] -> ... eventually enters a cycle.
+  // Tail: indices 0..tailLen-1 form a chain, then connect to cycle.
+  const tailLen = Math.max(1, n - cycleLen);
+  const arr: number[] = new Array(n);
+
+  // Cycle: indices tailLen .. tailLen+cycleLen-1
+  for (let i = 0; i < cycleLen; i += 1) {
+    const cycleIndex = tailLen + i;
+    const nextCycleIndex = tailLen + ((i + 1) % cycleLen);
+    arr[cycleIndex] = nextCycleIndex;
+  }
+
+  // Tail: 0 -> 1 -> ... -> tailLen-1 -> tailLen (start of cycle)
+  for (let i = 0; i < tailLen - 1; i += 1) {
+    arr[i] = i + 1;
+  }
+  arr[tailLen - 1] = tailLen;
+
+  return arr;
 }
 
 function reorderForMissingCase(values: number[]): number[] {

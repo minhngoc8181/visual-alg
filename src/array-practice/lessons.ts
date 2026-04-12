@@ -1,8 +1,12 @@
 import { createAggregateLessonConfigs } from './aggregate-lessons';
+import { createBinarySearchLessonConfigs } from './binarysearch-lessons';
 import { createExtremaLessonConfigs } from './extrema-lessons';
 import { createArrayLesson } from './lesson-factory';
 import { createLookupLessonConfigs } from './lookup-lessons';
+import { createPrefixSumLessonConfigs } from './prefixsum-lessons';
+import { createSlidingWindowLessonConfigs } from './slidingwindow-lessons';
 import { createTransformLessonConfigs } from './transform-lessons';
+import { createTwoPointerLessonConfigs } from './twopointer-lessons';
 import type { Lesson } from './types';
 
 const LESSON_ORDER = [
@@ -31,6 +35,19 @@ const LESSON_ORDER = [
   'longest-run',
   'merge-sorted',
   'missing-number',
+  // Two Pointers
+  'two-sum-sorted',
+  'find-cycle-length',
+  'intersect-sorted',
+  // Sliding Window
+  'max-sum-subarray-k',
+  'shortest-subarray-sum',
+  // Prefix Sum
+  'build-prefix-sum',
+  'range-sum-queries',
+  // Binary Search
+  'binary-search',
+  'first-occurrence',
 ] as const;
 
 export function createLessons(): Lesson[] {
@@ -39,6 +56,10 @@ export function createLessons(): Lesson[] {
     ...createExtremaLessonConfigs(),
     ...createAggregateLessonConfigs(),
     ...createTransformLessonConfigs(),
+    ...createTwoPointerLessonConfigs(),
+    ...createSlidingWindowLessonConfigs(),
+    ...createPrefixSumLessonConfigs(),
+    ...createBinarySearchLessonConfigs(),
   ].map(createArrayLesson);
 
   const lessonMap = new Map(lessons.map((lesson) => [lesson.id, lesson]));

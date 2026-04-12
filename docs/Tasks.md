@@ -75,7 +75,7 @@ Status: in progress
 - [x] Central lesson registry with `genTest + solution + checker`
 - [x] Starter code per lesson
 
-### Practice Lessons (25 total)
+### Practice Lessons (34 total)
 - [x] indexOf(value)
 - [x] lastIndexOf(value)
 - [x] contains(value)
@@ -96,6 +96,15 @@ Status: in progress
 - [x] longest consecutive run
 - [x] merge two sorted arrays
 - [x] missing number in sequence
+- [x] two sum (sorted array)
+- [x] detect cycle length (fast-slow pointers)
+- [x] intersection of two sorted arrays
+- [x] max sum of subarray of size k
+- [x] shortest subarray with sum ≥ target
+- [x] build prefix sum array
+- [x] range sum queries (prefix sum)
+- [x] binary search
+- [x] lower bound (first index ≥ target)
 
 ### Runner Pipeline
 - [x] Load selected lesson into editor
@@ -104,6 +113,11 @@ Status: in progress
 - [x] Execute student method in Web Worker with timeout
 - [x] Compare with `checker` or default deep equality
 - [x] Render per-test results with summary badge
+
+### Testing & Scalability
+- [x] Robust coverage constraints (O(n) and O(log n) tests up to 100K-200K elements)
+- [x] Standardize test execution cases to `20` tests per run
+- [x] Expose `auto_run_test()` on DOM console for automation suite execution
 
 ### UX
 - [x] Reset code button
